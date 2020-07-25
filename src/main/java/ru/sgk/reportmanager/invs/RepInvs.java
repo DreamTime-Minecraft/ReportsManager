@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepInvs {
-    public static Inventory createInventory(ReportInvTypes invtype) {
+    public static Inventory createInventory(ReportInvTypes invtype, Report report) {
         switch(invtype) {
             case REPORT1:
                 Inventory invrep1 = Bukkit.createInventory(null, 27, "§cReports §8>> §6Отправка жалобы §e(Стадия №1)");
@@ -195,5 +195,33 @@ public class RepInvs {
                 break;
             }
         }
+    }
+
+    private static void createItemsForSPEC(Inventory inv, Report rep) {
+        ItemStack info = new ItemStack(Material.PAPER);
+        ItemMeta metaInfo = info.getItemMeta();
+        metaInfo.setDisplayName("§c"+rep.getReportedPlayerName());
+        List<String> lore = new ArrayList<>();
+        lore.add("§0");
+        lore.add("§8> §7Жалуется: §f"+rep.getReporterPlayerName());
+        lore.add("§8> §7Причина: §f"+rep.getText());
+        lore.add("§1");
+        lore.add("§8> §7Кто ответил: §f"+ (rep.getResponder() == null ? "§cНикто" : rep.getResponder()));
+        lore.add("§8> §7Ответ: §f"+ (rep.getRespond() == null ? "§cПусто" : rep.getRespond()));
+        metaInfo.setLore(lore);
+        info.setItemMeta(metaInfo);
+        inv.setItem(0, info);
+
+        ItemStack whatIsIt = new ItemStack(Material.COMPASS);
+        ItemMeta metaWhat = whatIsIt.getItemMeta();
+        metaWhat.setDisplayName("§fЧто это такое?");
+        List<String> loreWhat = new ArrayList<>();
+        loreWhat.add("§0");
+        loreWhat.add("§8> §7Вы открыли одну из жалоб игроков.");
+        loreWhat.add("§8> §7Здесь Вы можете узнать о жалобе,");
+        loreWhat.add("§8> §7выдать наказание или оставить комментарий к жалобе.");
+        metaWhat.setLore(loreWhat);
+        whatIsIt.setItemMeta(metaWhat);
+        inv.setItem(8, whatIsIt);
     }
 }
