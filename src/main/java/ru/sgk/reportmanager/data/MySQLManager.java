@@ -174,6 +174,29 @@ public class MySQLManager
 			}
 			return null;
 		}
+
+		/**
+		 *
+		 */
+		public static List<Report> getReports()
+		{
+			try (ResultSet rs = db.query("SELECT * FROM `reportmanager` WHERE `responded` = FALSE ORDER BY id"))
+			{
+				List<Report> reportList = new ArrayList<>();
+
+				while (rs.next())
+				{
+					reportList.add(getReportFromResult(rs));
+				}
+
+				return reportList.isEmpty() ? null : reportList;
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			return null;
+		}
 	}
 
 	/**
