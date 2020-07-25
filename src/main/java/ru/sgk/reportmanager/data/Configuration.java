@@ -1,19 +1,13 @@
 package ru.sgk.reportmanager.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import ru.sgk.reportmanager.ReportManager;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Configuration 
 {
@@ -70,10 +64,9 @@ public class Configuration
 			config.load(file);
 			config.options().copyDefaults(true);
 			saveConfig(config, fileName);
+		} catch (InvalidConfigurationException | IOException e) {
+			e.printStackTrace();
 		}
-		catch (FileNotFoundException e){} 
-		catch (IOException e) {} 
-		catch (InvalidConfigurationException e) {}
 	}
 	
 }

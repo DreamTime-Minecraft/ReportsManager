@@ -21,7 +21,7 @@ public class Report {
 	private boolean checked = false;
 	
 	public Report(long id, boolean responsed, String reporterPlayerName, String reportedPlayerName, boolean toPlayer,
-			String text, String respond, String responder) {
+			String text, String respond, String responder, boolean checked) {
 		super();
 		this.id = id;
 		this.responsed = responsed;

@@ -1,28 +1,15 @@
 package ru.sgk.reportmanager.cmds;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-
-import ru.sgk.reportmanager.ReportManager;
-import ru.sgk.reportmanager.data.Configuration;
-import ru.sgk.reportmanager.data.Report;
-import ru.sgk.reportmanager.data.MySQLManager;
-
-public class ReportCmd implements CommandExecutor 
+public class ReportsCmd implements CommandExecutor
 {
 	private FileConfiguration config;
-	public ReportCmd(FileConfiguration config)
+	public ReportsCmd(FileConfiguration config)
 	{
 		this.config = config;
 	}
@@ -44,10 +31,13 @@ public class ReportCmd implements CommandExecutor
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
-
-
-        if (cmd.getName().equalsIgnoreCase("report")) {
-
+        if (cmd.getName().equalsIgnoreCase("reports")) {
+			Player player = (Player) sender;
+			if (player.hasPermission("reportmanager.support")) {
+				// TODO open support gui with reports
+			} else if (player.hasPermission("reportmanager.user")) {
+				// TODO open user gui with its reports
+			}
         }
 
 //		if (cmd.getName().equalsIgnoreCase("report"))

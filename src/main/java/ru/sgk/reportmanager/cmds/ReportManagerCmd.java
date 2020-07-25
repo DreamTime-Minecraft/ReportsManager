@@ -25,7 +25,7 @@ public class ReportManagerCmd implements CommandExecutor
 	{
 		if (cmd.getName().equalsIgnoreCase("reportmanager"))
 		{
-			if (!hasPermission(sender, "reportmanager.dev"))
+			if (!hasPermission(sender, "reportmanager.admin"))
 			{
 				sender.sendMessage("§cУ вас нет прав на выполнение данной команды");
 				return true;

@@ -5,8 +5,10 @@ author: SteveGrKek
 commands:
   report:
     usage: '/report - to get help'
+  reports:
+    usage: ''
 
   reportmanager:
-    desc: 'for server developer'
+    description: 'for server developer'
     aliases: [rm]
     usage: '/<command> reload'

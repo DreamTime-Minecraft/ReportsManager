@@ -1,11 +1,8 @@
 package ru.sgk.reportmanager;
 
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import ru.sgk.reportmanager.bungee.Messenger;
 import ru.sgk.reportmanager.cmds.ReportCmd;
 import ru.sgk.reportmanager.cmds.ReportManagerCmd;
@@ -13,13 +10,15 @@ import ru.sgk.reportmanager.data.Configuration;
 import ru.sgk.reportmanager.data.MySQLManager;
 import ru.sgk.reportmanager.events.MainEvents;
 
+import java.util.logging.Logger;
+
 public class ReportManager extends JavaPlugin 
 {
 	private static Logger logger;
 	private static String prefix = "§f[§cReport§fManager]";
-	private static String debugPrefix = "§f[§cReport§fManager]§4[Debug]&r";
 	private static ReportManager instance;
 	private static FileConfiguration config;
+
 	@Override
     public void onEnable() 
     {
@@ -51,23 +50,13 @@ public class ReportManager extends JavaPlugin
     {
     	logger.info(prefix + " §r"+ message);
     }
-    
-	/**
-	 * sends debug message to console with debug message
-	 * @param message
-	 */
-    public static void debug(String message)
-    {
-    	logger.info(debugPrefix + " §r"+ message);
-    }
-    
+
     @Override
     public void onDisable() 
     {
     	MySQLManager.closeConnection();
-    	log("plugin was enabled");
-    	Configuration.saveDefaultConfig();
-    }
+		log("plugin was disabled");
+	}
 
 	/**
 	 * @return the config
@@ -78,7 +67,6 @@ public class ReportManager extends JavaPlugin
 	}
     public static void dbConnect()
     {
-    	
     	String host = config.getString("database.host");
     	String database = config.getString("database.database");
     	String user = config.getString("database.user");
