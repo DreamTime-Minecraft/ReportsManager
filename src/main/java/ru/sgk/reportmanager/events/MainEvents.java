@@ -12,7 +12,7 @@ import ru.sgk.reportmanager.data.MySQLManager;
 
 public class MainEvents implements Listener {
 
-	@EventHandler
+	/*@EventHandler
 	public  void onPlayerJoin(PlayerJoinEvent e)
 	{
 		Runnable task = () ->
@@ -27,7 +27,7 @@ public class MainEvents implements Listener {
 			}
 		};
 		new Thread(task).start();
-	}
+	}*/
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {

@@ -3,11 +3,14 @@ package ru.sgk.reportmanager.cmds;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -18,6 +21,10 @@ import ru.sgk.reportmanager.ReportManager;
 import ru.sgk.reportmanager.data.Configuration;
 import ru.sgk.reportmanager.data.Report;
 import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.Reporting;
+import ru.sgk.reportmanager.events.InventoryEvents;
+import ru.sgk.reportmanager.invs.RepInvs;
+import ru.sgk.reportmanager.invs.ReportInvTypes;
 
 public class ReportCmd implements CommandExecutor 
 {
@@ -41,14 +48,50 @@ public class ReportCmd implements CommandExecutor
 	{
 		return sender.hasPermission("reportmanager.admin") || sender.hasPermission(permission);
 	}
+
+	public static ConcurrentHashMap<UUID, Integer> cooldown = new ConcurrentHashMap<>(50,1f);
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 
+		if(!hasPermission(sender, "reportmanager.use")) {
+			sender.sendMessage("§сУ Вас недостаточно прав. Если Вы считаете это ошибкой, сообщите Администрации сервера.");
+			return true;
+		}
 
-        if (cmd.getName().equalsIgnoreCase("report")) {
+		if(args.length == 0) {
+			printUsage(sender);
+		} else {
+			if(args[0].equalsIgnoreCase("help")) {
+				printUsage(sender);
+				return true;
+			}
 
-        }
+			if(args.length == 1) {
+				String name = args[0];
+				long time = System.currentTimeMillis();
+				Reporting reporting = new Reporting(name, time);
+				InventoryEvents.reporti.put(sender.getName(), reporting);
+				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORT1, null));
+			} else {
+				String name = args[0];
+				StringBuilder sb = new StringBuilder();
+				for(int i = 1; i < args.length; i++) {
+					sb.append(args[i]).append(" ");
+				}
+				String reason = sb.toString();
+				reason = reason.substring(0, reason.length()-1);
+
+				String reporter = sender.getName();
+
+				if(sender instanceof ConsoleCommandSender) {
+					reporter = "§cАнти-чит §2Гномео";
+				}
+
+				long id = ReportManager.sendReport(reporter, name, reason);
+				sender.sendMessage("§aВаша жалоба на игрока §2"+name+" §aбудет рассмотрена модераторами в ближайшее время! §8[id жалобы: "+id+"]");
+			}
+		}
 
 //		if (cmd.getName().equalsIgnoreCase("report"))
 //		{
@@ -285,22 +328,19 @@ public class ReportCmd implements CommandExecutor
 //		}
 		return true;
 	}
+
 	private void printUsage(CommandSender sender)
 	{
-		sender.sendMessage("§rHelp:");
-		if (hasPermission(sender, "reportmanager.usr.report"))
-		{
-			sender.sendMessage("§f /report <ник игрока> <описание жалобы> - Отправить жалобу на игрока");
-			sender.sendMessage("§f /report .<тема> <описание жалобы> - Отправить жалобу на определённую тему, к примеру: /report .баг происходит какой-то баг");
+		sender.sendMessage("§fПомощь по команде §c/report§f:");
+		if(hasPermission(sender, "reportmanager.use")) {
+			sender.sendMessage("§a > §7/report <ник> - открыть меню для отправки жалобы");
+			sender.sendMessage("§a > §7/report <ник> <причина> - отправить жалобу по своей причине");
 		}
-		if (hasPermission(sender, "reportmanager.usr.list"))
-			sender.sendMessage("§f /report -mylist [страница] - Посмотреть свои отправленные жалобы");
-		if (hasPermission(sender, "reportmanager.usr.get") || hasPermission(sender, "reportmanager.admin") ) 
-			sender.sendMessage("§f /report -get <id> - Посмотреть определённую жалобу");
-		if (hasPermission(sender, "reportmanager.admin"))
-		{
-			sender.sendMessage("§f /report -list [страница] - Посмотреть новые жалобы пользователей");
-			sender.sendMessage("§f /report -reply [id] - Ответить на жалобу по id [id]");
+		if(hasPermission(sender, "reportmanager.reports.use")) {
+			sender.sendMessage("§a > §7/reports - открыть список открытых жалоб");
+			sender.sendMessage("§a > §7/reports close <id> - пометить жалобу решённой, не оставив ответ");
+			//sender.sendMessage("§a > §7/reports answer <id> <текст> - ответить на жалобу");
+			//Возможно потом ты это сделаешь, я слишком глуп для такого
 		}
 	}
 }

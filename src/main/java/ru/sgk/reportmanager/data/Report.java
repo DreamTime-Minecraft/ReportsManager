@@ -41,6 +41,8 @@ public class Report {
 	{
 		return responsed;
 	}
+
+	public void setResponded(boolean responsed) { this.responsed = responsed; }
 	
 	public String getReporterPlayerName() 
 	{

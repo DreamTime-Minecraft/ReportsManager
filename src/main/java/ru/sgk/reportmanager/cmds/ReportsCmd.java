@@ -1,10 +1,15 @@
 package ru.sgk.reportmanager.cmds;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.Report;
+import ru.sgk.reportmanager.invs.RepInvs;
+import ru.sgk.reportmanager.invs.ReportInvTypes;
 
 public class ReportsCmd implements CommandExecutor
 {
@@ -29,16 +34,46 @@ public class ReportsCmd implements CommandExecutor
 		return sender.hasPermission("reportmanager.admin") || sender.hasPermission(permission);
 	}
 	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-	{
-        if (cmd.getName().equalsIgnoreCase("reports")) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if(!hasPermission(sender, "reportmanager.reports.use")) {
+			sender.sendMessage("§сУ Вас недостаточно прав. Если Вы считаете это ошибкой, сообщите Администрации сервера.");
+			return true;
+		}
+
+		if(args.length == 0) {
+			if(sender instanceof Player) {
+				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORTS, null));
+			} else {
+				sender.sendMessage("§a/report help");
+			}
+		} else {
+			if(args[0].equalsIgnoreCase("close")) {
+				if(args.length == 2) {
+					try {
+						long id = Long.parseLong(args[1]);
+						Report report = MySQLManager.Requests.getReport(id);
+						if(report.isResponded()) {
+							sender.sendMessage("§cНа жалобу уже дали ответ!");
+						} else {
+							report.setResponded(true);
+						}
+					}catch (NumberFormatException e) {
+						sender.sendMessage("§cЭто не число!");
+					}
+				} else {
+					Bukkit.dispatchCommand(sender, "/report help");
+				}
+			}
+		}
+
+        /*if (cmd.getName().equalsIgnoreCase("reports")) {
 			Player player = (Player) sender;
 			if (player.hasPermission("reportmanager.support")) {
 				// TODO open support gui with reports
 			} else if (player.hasPermission("reportmanager.user")) {
 				// TODO open user gui with its reports
 			}
-        }
+        }*/
 
 //		if (cmd.getName().equalsIgnoreCase("report"))
 //		{
