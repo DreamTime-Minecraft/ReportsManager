@@ -29,7 +29,9 @@ public class RepInvs {
                 createItemsForREPORTS(invreps);
                 return invreps;
             case PUN_REPORT:
-                break;
+                Inventory invpun = Bukkit.createInventory(null, 54, "§cReports §8>> §6Выдача наказания для §e"+report.getReportedPlayerName());
+                createItemsForPunish(invpun, report);
+                return invpun;
             case SPEC_REPORT:
                 Inventory invspec = Bukkit.createInventory(null, 54, "§cReports §8>> §6Жалоба на §e"+report.getReportedPlayerName());
                 createItemsForSPEC(invspec, report);
@@ -37,7 +39,6 @@ public class RepInvs {
             default:
                 return Bukkit.createInventory(null, 9, "§cНеизвестное меню!");
         }
-        return null;
     }
 
     private static void createItemsForREPORT1(Inventory inv) {
@@ -231,5 +232,90 @@ public class RepInvs {
         metaPunish.setDisplayName("§cВыдать наказание");
         punish.setItemMeta(metaPunish);
         inv.setItem(49, punish);
+    }
+
+    private static void createItemsForPunish(Inventory inv, Report report) {
+        //Заголовки
+        ItemStack ban = new ItemStack(Material.BEDROCK);
+        ban.getItemMeta().setDisplayName("§cБаны");
+        inv.setItem(10, ban);
+
+        ItemStack mute = new ItemStack(Material.OBSIDIAN);
+        mute.getItemMeta().setDisplayName("§cМуты");
+        inv.setItem(12, mute);
+
+        ItemStack kick = new ItemStack(Material.NETHER_BRICK);
+        kick.getItemMeta().setDisplayName("§cКики");
+        inv.setItem(14, kick);
+
+        ItemStack warn = new ItemStack(Material.NETHERRACK);
+        warn.getItemMeta().setDisplayName("§cВарны");
+        inv.setItem(16, warn);
+
+        //Клик чтобы бан
+        ItemStack banCheat = new ItemStack(Material.BARRIER);
+        ItemMeta metaCheat = banCheat.getItemMeta();
+        metaCheat.setDisplayName("§cЧиты");
+        List<String> loreCheat = new ArrayList<>();
+        loreCheat.add("§7/ban "+report.getReportedPlayerName()+" Использование постороннего ПО");
+        metaCheat.setLore(loreCheat);
+        banCheat.setItemMeta(metaCheat);
+        inv.setItem(19, banCheat);
+
+        ItemStack banGrief = new ItemStack(Material.BARRIER);
+        ItemMeta metaGrief = banGrief.getItemMeta();
+        metaGrief.setDisplayName("§cГриферство (90 дней)");
+        List<String> loreGrief = new ArrayList<>();
+        loreGrief.add("§7/ban "+report.getReportedPlayerName()+" 90d Гриферство");
+        metaGrief.setLore(loreGrief);
+        banGrief.setItemMeta(metaGrief);
+        inv.setItem(28, banGrief);
+
+        ItemStack banTeam = new ItemStack(Material.BARRIER);
+        ItemMeta metaTeam = banTeam.getItemMeta();
+        metaTeam.setDisplayName("§cПомехи в команде (3 дня)");
+        List<String> loreTeam = new ArrayList<>();
+        loreTeam.add("§7/ban "+report.getReportedPlayerName()+" 3d Помехи в команде");
+        metaTeam.setLore(loreTeam);
+        banTeam.setItemMeta(metaTeam);
+        inv.setItem(37, banTeam);
+
+        //Клик чтобы мут
+        ItemStack muteSwear = new ItemStack(Material.STRUCTURE_VOID);
+        ItemMeta metaSwear = muteSwear.getItemMeta();
+        metaSwear.setDisplayName("§cМаты/Оскорбления (30 минут)");
+        List<String> loreSwear = new ArrayList<>();
+        loreSwear.add("§7/mute "+report.getReportedPlayerName()+" 30m Маты/Оскорбления");
+        metaSwear.setLore(loreSwear);
+        muteSwear.setItemMeta(metaSwear);
+        inv.setItem(21, muteSwear);
+
+        ItemStack mutePropoganda = new ItemStack(Material.STRUCTURE_VOID);
+        ItemMeta metaPropoganda = mutePropoganda.getItemMeta();
+        metaPropoganda.setDisplayName("§cПропоганда (3 часа)");
+        List<String> lorePropoganda = new ArrayList<>();
+        lorePropoganda.add("§7/mute "+report.getReportedPlayerName()+" 2h Пропоганда");
+        metaPropoganda.setLore(lorePropoganda);
+        mutePropoganda.setItemMeta(metaPropoganda);
+        inv.setItem(30, mutePropoganda);
+
+        ItemStack muteSpam = new ItemStack(Material.STRUCTURE_VOID);
+        ItemMeta metaSpam = muteSpam.getItemMeta();
+        metaSpam.setDisplayName("§cСпам/Флуд (15 минут)");
+        List<String> loreSpam = new ArrayList<>();
+        loreSpam.add("§7/mute "+report.getReportedPlayerName()+" 15m Спам/Флуд");
+        metaSpam.setLore(loreSpam);
+        muteSpam.setItemMeta(metaSpam);
+        inv.setItem(39, muteSpam);
+
+        //Клик чтобы кик
+        ItemStack kickPomeha = new ItemStack(Material.BONE);
+        ItemMeta metaPomeha = kickPomeha.getItemMeta();
+        metaPomeha.setDisplayName("§cПомеха");
+        List<String> lorePomeha = new ArrayList<>();
+        lorePomeha.add("§7/kick "+report.getReportedPlayerName()+" Помеха в игре");
+        metaPomeha.setLore(lorePomeha);
+        kickPomeha.setItemMeta(metaPomeha);
+        inv.setItem(23, kickPomeha);
     }
 }
