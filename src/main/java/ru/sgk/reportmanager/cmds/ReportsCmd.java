@@ -56,6 +56,7 @@ public class ReportsCmd implements CommandExecutor
 							sender.sendMessage("§cНа жалобу уже дали ответ!");
 						} else {
 							report.setResponded(true);
+							MySQLManager.Requests.setResponded(id, true);
 						}
 					}catch (NumberFormatException e) {
 						sender.sendMessage("§cЭто не число!");

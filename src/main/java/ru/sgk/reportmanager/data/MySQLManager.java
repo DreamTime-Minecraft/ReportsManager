@@ -91,6 +91,10 @@ public class MySQLManager
 				return db.execute("UPDATE `reportmanager` SET `response` = ?, `responder` = ?, `responded` = TRUE, `checked` = FALSE where id = ?"
 						, str, responder, id) > 0;
 		}
+
+		public static void setResponded(long id, boolean responded) {
+			db.execute("UPDATE `reportmanager` SET `responded`="+responded+" WHERE `id`"+id);
+		}
 		
 		/**
 		 * Sends respons of report
