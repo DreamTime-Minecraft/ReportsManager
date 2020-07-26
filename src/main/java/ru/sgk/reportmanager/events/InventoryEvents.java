@@ -34,7 +34,7 @@ public class InventoryEvents implements Listener {
                     sendReport(p, "Гриферство на выживании");
                 } else if(slot == 14) {
                     p.closeInventory();
-                    p.sendMessage("§fИспользуйте команду §c/report <ник> custom <причина>");
+                    p.sendMessage("§fИспользуйте команду §c/report <ник> <причина>");
                 }
             } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Отправка жалобы §e(Стадия №2)")) {
                 if(slot == 10) {
