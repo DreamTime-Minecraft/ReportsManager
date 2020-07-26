@@ -47,9 +47,25 @@ public class InventoryEvents implements Listener {
                     p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
                 }
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Выдача наказания для")) {
-                
+                if(slot == 19) {
+                    //ToDo ban cheat
+                } else if(slot == 28) {
+                    //ToDo ban grief
+                } else if(slot == 37) {
+                    //ToDo ban team
+                } else if(slot == 21) {
+                    //ToDo mute swear
+                } else if(slot == 30) {
+                    //ToDo mute propoganda
+                } else if(slot == 39) {
+                    //ToDo mute spam
+                } else if(slot == 23) {
+                    //ToDo kick pomeha
+                }
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Жалоба на")) {
-
+                if(slot == 49) {
+                    //ToDo punish
+                }
             }
         }
     }
