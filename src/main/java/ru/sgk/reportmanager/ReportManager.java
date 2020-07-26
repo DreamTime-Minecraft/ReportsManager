@@ -8,6 +8,8 @@ import ru.sgk.reportmanager.cmds.ReportCmd;
 import ru.sgk.reportmanager.cmds.ReportManagerCmd;
 import ru.sgk.reportmanager.data.Configuration;
 import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.ReportTimer;
+import ru.sgk.reportmanager.events.InventoryEvents;
 import ru.sgk.reportmanager.events.MainEvents;
 
 import java.util.logging.Logger;
@@ -35,6 +37,11 @@ public class ReportManager extends JavaPlugin
     	getCommand("reportmanager").setExecutor(new ReportManagerCmd(config));
     	dbConnect();
     	getServer().getPluginManager().registerEvents(new MainEvents(), instance);
+    	getServer().getPluginManager().registerEvents(new InventoryEvents(), instance);
+
+		ReportTimer timer = new ReportTimer();
+		timer.runTaskTimerAsynchronously(instance, 20, 20*60);
+
     	log("plugin was enabled");
     }
     

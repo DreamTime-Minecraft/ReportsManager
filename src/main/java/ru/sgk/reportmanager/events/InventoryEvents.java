@@ -5,10 +5,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.Reporting;
 import ru.sgk.reportmanager.invs.RepInvs;
 import ru.sgk.reportmanager.invs.ReportInvTypes;
 
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class InventoryEvents implements Listener {
+
+    public static ConcurrentHashMap<String, Reporting> reporti = new ConcurrentHashMap<>(50,1f);
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
