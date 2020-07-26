@@ -81,4 +81,8 @@ public class ReportManager extends JavaPlugin
     	MySQLManager.connect(host, database, user, password);
     	MySQLManager.Requests.createTable();
     }
+
+    public static void sendReport(String sender, String reported, String reason) {
+
+	}
 }

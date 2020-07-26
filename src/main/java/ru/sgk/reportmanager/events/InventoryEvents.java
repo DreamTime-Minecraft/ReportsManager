@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.Report;
 import ru.sgk.reportmanager.data.Reporting;
 import ru.sgk.reportmanager.invs.RepInvs;
 import ru.sgk.reportmanager.invs.ReportInvTypes;

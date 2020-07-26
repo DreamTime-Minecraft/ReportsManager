@@ -14,20 +14,18 @@ public class Report {
 	private boolean responsed;
 	private String reporterPlayerName;
 	private String reportedPlayerName;
-	private boolean toPlayer = true;
 	private String text;
 	private String respond;
 	private String responder;
 	private boolean checked = false;
 	
-	public Report(long id, boolean responsed, String reporterPlayerName, String reportedPlayerName, boolean toPlayer,
+	public Report(long id, boolean responsed, String reporterPlayerName, String reportedPlayerName,
 			String text, String respond, String responder, boolean checked) {
 		super();
 		this.id = id;
 		this.responsed = responsed;
 		this.reporterPlayerName = reporterPlayerName;
 		this.reportedPlayerName = reportedPlayerName;
-		this.toPlayer = toPlayer;
 		this.text = text;
 		this.respond = respond;
 		this.responder = responder;
@@ -56,11 +54,6 @@ public class Report {
 	public String getText() 
 	{
 		return text;
-	}
-	
-	public boolean isToPlayer() 
-	{
-		return toPlayer;
 	}
 
 	public String getRespond() 
@@ -101,32 +94,16 @@ public class Report {
 		sender.sendMessage("Жалобы: ");
 		for (Report report : reportList)
 		{
-			if (report.isToPlayer())
+			for (String s : Configuration.getListString(ReportManager.getInstance().getConfig(), "format.player"))
 			{
-				for (String s : Configuration.getListString(ReportManager.getInstance().getConfig(), "format.player"))
-				{
-					String s1 = s.replaceAll("%id%", report.getId() + "")
-						 .replaceAll("%playername%", report.getReportedPlayerName())
-						 .replaceAll("%reporter%", report.getReporterPlayerName())
-						 .replaceAll("%text%", report.getText().replace("\n", " "))
-						 .replaceAll("%respond%",report.getRespond())
-						 .replaceAll("%admin%", report.getResponder());
+				String s1 = s.replaceAll("%id%", report.getId() + "")
+						.replaceAll("%playername%", report.getReportedPlayerName())
+						.replaceAll("%reporter%", report.getReporterPlayerName())
+						.replaceAll("%text%", report.getText().replace("\n", " "))
+						.replaceAll("%respond%",report.getRespond())
+						.replaceAll("%admin%", report.getResponder());
 					
-					sender.sendMessage(s1);
-				}
-			}
-			else 
-			{
-				for (String s : Configuration.getListString(ReportManager.getInstance().getConfig(), "format.theme"))
-				{
-					s = s.replaceAll("%id%", report.getId() + "")
-						 .replaceAll("%playername%", report.getReportedPlayerName())
-						 .replaceAll("%reporter%", report.getReporterPlayerName())
-						 .replaceAll("%text%", report.getText().replace("\n", " "))
-						 .replaceAll("%respond%", report.getRespond())
-						 .replaceAll("%admin%", report.getResponder());
-					sender.sendMessage(s);
-				}
+				sender.sendMessage(s1);
 			}
 			if (!ReportCmd.hasPermission(sender, "reportmanager.admin"))
 				MySQLManager.Requests.checkReport(report.getId());

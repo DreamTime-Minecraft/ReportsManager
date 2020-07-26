@@ -257,7 +257,7 @@ public class ReportCmd implements CommandExecutor
 //					}
 //					List<String> texts =  new ArrayList<String>();
 //					texts.add(text);
-//					long id = MySQLManager.Requests.sendReport(sender.getName(), args[0], texts, toPlayer);
+//					long id = MySQLManager.Requests.send(sender.getName(), args[0], texts, toPlayer);
 //					sender.sendMessage(Configuration.getString(config, "messages.report-sended").replaceAll("%id%", "" + id));
 //					Report.notifyAdmin(id);
 //					for (Player player : Bukkit.getOnlinePlayers())

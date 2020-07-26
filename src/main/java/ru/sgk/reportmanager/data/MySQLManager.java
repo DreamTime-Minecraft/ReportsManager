@@ -35,7 +35,6 @@ public class MySQLManager
 					+ "`responded` BOOLEAN DEFAULT FALSE,"		// был ли ответ на репорт
 					+ "`reporter_player_name` VARCHAR(255),"	// ник того, кто создал репорт
 					+ "`reported_player_name` VARCHAR(255),"	// ник того, на кого жалоба
-					+ "`to_player` BOOLEAN DEFAULT TRUE,"		// Если репорт об игроке
 					+ "`responder` VARCHAR(255),"				// Ник админа, который ответил на репорт
 					+ "`response` TEXT,"						// ответ от админа
 					+ "`checked` BOOLEAN DEFAULT FALSE,"		// Был ли репорт просмотрен (мб уберу, ибо хз как это будет работать через гуи)
@@ -49,11 +48,10 @@ public class MySQLManager
 			String reported = rs.getString("reported_player_name");
 			boolean responded = rs.getBoolean("responded");
 			String text = rs.getString("text");
-			boolean toPlayer = rs.getBoolean("to_player");
 			String response = rs.getString("response");
 			String responder = rs.getString("responder");
 			boolean checked = rs.getBoolean("checked");
-			return new Report(id, responded, reporter, reported, toPlayer, text, response, responder, checked);
+			return new Report(id, responded, reporter, reported, text, response, responder, checked);
 		}
 		
 		/**
@@ -100,7 +98,7 @@ public class MySQLManager
 		 * @param reported name of player to that report sends or theme of report
 		 * @param text text of report
 		 */
-		public static long sendReport(String reporter, String reported, List<String> text, boolean toPlayer)
+		public static long sendReport(String reporter, String reported, List<String> text)
 		{
 			StringBuilder sb = new StringBuilder();
 			for (String s : text)
@@ -108,11 +106,10 @@ public class MySQLManager
 				sb.append(s).append("\n");
 			}
 				
-				db.execute("INSERT INTO `reportmanager`(`reporter_player_name`, `reported_player_name`, `text`, `to_player`) VALUES (?, ?, ?, ?)",
+				db.execute("INSERT INTO `reportmanager`(`reporter_player_name`, `reported_player_name`, `text`) VALUES (?, ?, ?)",
 						reporter,
 						reported,
-						sb.toString(),
-						toPlayer);
+						sb.toString());
 				
 				try (ResultSet rs = db.query("SELECT * FROM `reportmanager` WHERE `reporter_player_name` = ? ORDER BY id DESC LIMIT 1", reporter))
 				{
