@@ -31,7 +31,9 @@ public class RepInvs {
             case PUN_REPORT:
                 break;
             case SPEC_REPORT:
-                break;
+                Inventory invspec = Bukkit.createInventory(null, 54, "§cReports §8>> §6Жалоба на §e"+report.getReportedPlayerName());
+                createItemsForSPEC(invspec, report);
+                return invspec;
             default:
                 return Bukkit.createInventory(null, 9, "§cНеизвестное меню!");
         }
@@ -223,5 +225,11 @@ public class RepInvs {
         metaWhat.setLore(loreWhat);
         whatIsIt.setItemMeta(metaWhat);
         inv.setItem(8, whatIsIt);
+
+        ItemStack punish = new ItemStack(Material.BARRIER);
+        ItemMeta metaPunish = punish.getItemMeta();
+        metaPunish.setDisplayName("§cВыдать наказание");
+        punish.setItemMeta(metaPunish);
+        inv.setItem(49, punish);
     }
 }
