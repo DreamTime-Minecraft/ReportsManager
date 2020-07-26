@@ -29,6 +29,7 @@ public class Report {
 		this.text = text;
 		this.respond = respond;
 		this.responder = responder;
+		this.checked = checked;
 	}
 	
 	public long getId() 

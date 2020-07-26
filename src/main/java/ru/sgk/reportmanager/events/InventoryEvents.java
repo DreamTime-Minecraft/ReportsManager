@@ -1,16 +1,17 @@
 package ru.sgk.reportmanager.events;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import ru.sgk.reportmanager.ReportManager;
 import ru.sgk.reportmanager.data.MySQLManager;
 import ru.sgk.reportmanager.data.Report;
 import ru.sgk.reportmanager.data.Reporting;
 import ru.sgk.reportmanager.invs.RepInvs;
 import ru.sgk.reportmanager.invs.ReportInvTypes;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InventoryEvents implements Listener {
@@ -28,52 +29,78 @@ public class InventoryEvents implements Listener {
                 if(slot == 11) {
                     p.openInventory(RepInvs.createInventory(ReportInvTypes.REPORT2, null));
                 } else if(slot == 15) {
-                    //ToDo помеха в команде
+                    sendReport(p, "Помеха в команде");
                 } else if(slot == 12) {
-                    //ToDo гриферство на выживании
+                    sendReport(p, "Гриферство на выживании");
                 } else if(slot == 14) {
                     p.closeInventory();
                     p.sendMessage("§fИспользуйте команду §c/report <ник> custom <причина>");
                 }
             } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Отправка жалобы §e(Стадия №2)")) {
                 if(slot == 10) {
-                    //ToDo killAura
+                    sendReport(p, "Чит - КиллАура");
                 } else if(slot == 11) {
-                    //ToDo AntiKnockBack
+                    sendReport(p, "Чит - АнтиКнокБек");
                 } else if(slot == 12) {
-                    //ToDo fly
+                    sendReport(p, "Чит - Флай");
                 } else if(slot == 14) {
-                    //ToDo build
+                    sendReport(p, "Чит - Билд");
                 } else if(slot == 15) {
-                    //ToDo bow
+                    sendReport(p, "Чит - Лук");
                 } else if(slot == 16) {
-                    //ToDo other
+                    sendReport(p, "Чит - Другое");
                 }
             } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Все жалобы")) {
                 if(slot < 53) {
-                    p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
+                    Report report = MySQLManager.Requests.getReports().get(slot);
+                    if(report != null) {
+                        p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
+                    }
                 }
-            } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Выдача наказания для")) {
+            } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Выдача наказания для §e№")) {
+                long id = Long.parseLong(p.getOpenInventory().getTitle().substring(41));
+                String nickname = MySQLManager.Requests.getReport(id).getReportedPlayerName();
+                if(nickname == null) {
+                    p.closeInventory();
+                    p.sendMessage("§cПроизошла ошибка при получении ника игрока! Напишите об этом Администрации сервера!");
+                }
                 if(slot == 19) {
-                    //ToDo ban cheat
+                    p.performCommand("ban "+nickname+" Использование постороннего ПО");
+                    p.closeInventory();
                 } else if(slot == 28) {
-                    //ToDo ban grief
+                    p.performCommand("ban "+nickname+" 90d Гриферство");
+                    p.closeInventory();
                 } else if(slot == 37) {
-                    //ToDo ban team
+                    p.performCommand("ban "+nickname+" 3d Помехи в команде");
+                    p.closeInventory();
                 } else if(slot == 21) {
-                    //ToDo mute swear
+                    p.performCommand("mute "+nickname+" 30m Маты/Оскорбления");
+                    p.closeInventory();
                 } else if(slot == 30) {
-                    //ToDo mute propoganda
+                    p.performCommand("mute "+nickname+" 2h Пропоганда");
+                    p.closeInventory();
                 } else if(slot == 39) {
-                    //ToDo mute spam
+                    p.performCommand("mute "+nickname+" 15m Спам/Флуд");
+                    p.closeInventory();
                 } else if(slot == 23) {
-                    //ToDo kick pomeha
+                    p.performCommand("kick "+nickname+" Помеха в игре");
+                    p.closeInventory();
                 }
-            } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Жалоба на")) {
+            } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Жалоба №")) {
+                long id = Long.parseLong(p.getOpenInventory().getTitle().substring(25));
                 if(slot == 49) {
-                    //ToDo punish
+                    p.openInventory(RepInvs.createInventory(ReportInvTypes.PUN_REPORT, MySQLManager.Requests.getReport(id)));
                 }
             }
         }
+    }
+
+    private void sendReport(Player p, String reason) {
+        String name = p.getName();
+        Reporting rep = reporti.get(name);
+        long id = ReportManager.sendReport(name, rep.name, reason);
+        p.closeInventory();
+        p.sendMessage("§aВаша жалоба на игрока §2"+rep.name+" §aбудет рассмотрена модераторами в ближайшее время! §8[id жалобы: "+id+"]");
+        reporti.remove(p.getName());
     }
 }

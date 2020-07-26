@@ -29,11 +29,11 @@ public class RepInvs {
                 createItemsForREPORTS(invreps);
                 return invreps;
             case PUN_REPORT:
-                Inventory invpun = Bukkit.createInventory(null, 54, "§cReports §8>> §6Выдача наказания для §e"+report.getReportedPlayerName());
+                Inventory invpun = Bukkit.createInventory(null, 54, "§cReports §8>> §6Выдача наказания для §e№"+report.getId());
                 createItemsForPunish(invpun, report);
                 return invpun;
             case SPEC_REPORT:
-                Inventory invspec = Bukkit.createInventory(null, 54, "§cReports §8>> §6Жалоба на §e"+report.getReportedPlayerName());
+                Inventory invspec = Bukkit.createInventory(null, 54, "§cReports §8>> §6Жалоба №"+report.getId());
                 createItemsForSPEC(invspec, report);
                 return invspec;
             default:
@@ -180,20 +180,24 @@ public class RepInvs {
 
         for(int i = 0; i < 53; i++) {
             if(reportList.size() >= i) {
-                Report rep = reportList.get(i);
-                ItemStack report = new ItemStack(Material.PAPER);
-                ItemMeta meta = report.getItemMeta();
-                meta.setDisplayName("§c"+rep.getReportedPlayerName());
-                List<String> lore = new ArrayList<>();
-                lore.add("§0");
-                lore.add("§8> §7Жалуется: §f"+rep.getReporterPlayerName());
-                lore.add("§8> §7Причина: §f"+rep.getText());
-                lore.add("§1");
-                lore.add("§8> §7Кто ответил: §f"+ (rep.getResponder() == null ? "§cНикто" : rep.getResponder()));
-                lore.add("§8> §7Ответ: §f"+ (rep.getRespond() == null ? "§cПусто" : rep.getRespond()));
-                meta.setLore(lore);
-                report.setItemMeta(meta);
-                inv.setItem(i, report);
+                //Report rep = reportList.get(i);
+                for(Report report : reportList) {
+                    if(!report.isResponded()) {
+                        ItemStack item = new ItemStack(Material.PAPER);
+                        ItemMeta meta = item.getItemMeta();
+                        meta.setDisplayName("§c"+report.getReportedPlayerName());
+                        List<String> lore = new ArrayList<>();
+                        lore.add("§0");
+                        lore.add("§8> §7Жалуется: §f"+report.getReporterPlayerName());
+                        lore.add("§8> §7Причина: §f"+report.getText());
+                        lore.add("§1");
+                        lore.add("§8> §7Кто ответил: §f"+ (report.getResponder() == null ? "§cНикто" : report.getResponder()));
+                        lore.add("§8> §7Ответ: §f"+ (report.getRespond() == null ? "§cПусто" : report.getRespond()));
+                        meta.setLore(lore);
+                        item.setItemMeta(meta);
+                        inv.setItem(i, item);
+                    }
+                }
             } else {
                 break;
             }

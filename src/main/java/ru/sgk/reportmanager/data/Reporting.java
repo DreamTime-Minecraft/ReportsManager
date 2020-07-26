@@ -1,6 +1,6 @@
 package ru.sgk.reportmanager.data;
 
 public class Reporting {
-    String name;
-    Long time;
+    public String name;
+    public Long time;
 }

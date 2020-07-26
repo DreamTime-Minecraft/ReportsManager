@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import org.bukkit.event.player.PlayerQuitEvent;
 import ru.sgk.reportmanager.data.Report;
 import ru.sgk.reportmanager.data.MySQLManager;
 
@@ -26,5 +27,11 @@ public class MainEvents implements Listener {
 			}
 		};
 		new Thread(task).start();
+	}
+
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent e) {
+		String name = e.getPlayer().getName();
+		InventoryEvents.reporti.remove(name);
 	}
 }
