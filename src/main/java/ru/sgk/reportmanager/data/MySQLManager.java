@@ -98,18 +98,12 @@ public class MySQLManager
 		 * @param reported name of player to that report sends or theme of report
 		 * @param text text of report
 		 */
-		public static long sendReport(String reporter, String reported, List<String> text)
+		public static long sendReport(String reporter, String reported, String text)
 		{
-			StringBuilder sb = new StringBuilder();
-			for (String s : text)
-			{
-				sb.append(s).append("\n");
-			}
-				
 				db.execute("INSERT INTO `reportmanager`(`reporter_player_name`, `reported_player_name`, `text`) VALUES (?, ?, ?)",
 						reporter,
 						reported,
-						sb.toString());
+						text);
 				
 				try (ResultSet rs = db.query("SELECT * FROM `reportmanager` WHERE `reporter_player_name` = ? ORDER BY id DESC LIMIT 1", reporter))
 				{

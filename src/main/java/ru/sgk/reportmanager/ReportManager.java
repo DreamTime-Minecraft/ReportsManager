@@ -1,13 +1,17 @@
 package ru.sgk.reportmanager;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.sgk.reportmanager.bungee.Messenger;
 import ru.sgk.reportmanager.cmds.ReportCmd;
 import ru.sgk.reportmanager.cmds.ReportManagerCmd;
 import ru.sgk.reportmanager.data.Configuration;
 import ru.sgk.reportmanager.data.MySQLManager;
+import ru.sgk.reportmanager.data.Report;
 import ru.sgk.reportmanager.data.ReportTimer;
 import ru.sgk.reportmanager.events.InventoryEvents;
 import ru.sgk.reportmanager.events.MainEvents;
@@ -82,7 +86,18 @@ public class ReportManager extends JavaPlugin
     	MySQLManager.Requests.createTable();
     }
 
-    public static void sendReport(String sender, String reported, String reason) {
+    public static long sendReport(String sender, String reported, String reason) {
+		long id = MySQLManager.Requests.sendReport(sender, reported, reason);
+		Report.notifyAdmin(id);
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
+			out.writeUTF("report.send");
+			out.writeLong(id);
+
+			player.sendPluginMessage(instance, "BungeeCord", out.toByteArray());
+			break;
+		}
+		return id;
 	}
 }
