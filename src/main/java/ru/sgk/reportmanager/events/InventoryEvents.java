@@ -1,9 +1,11 @@
 package ru.sgk.reportmanager.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import ru.sgk.reportmanager.ReportManager;
 import ru.sgk.reportmanager.data.MySQLManager;
 import ru.sgk.reportmanager.data.Report;
@@ -11,6 +13,7 @@ import ru.sgk.reportmanager.data.Reporting;
 import ru.sgk.reportmanager.invs.RepInvs;
 import ru.sgk.reportmanager.invs.ReportInvTypes;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InventoryEvents implements Listener {
@@ -49,15 +52,35 @@ public class InventoryEvents implements Listener {
                 } else if(slot == 16) {
                     sendReport(p, "Чит - Другое");
                 }
-            } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Все жалобы")) {
-                if(slot < 53) {
+            } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Все жалобы №")) {
+                int page = Integer.parseInt(p.getOpenInventory().getTitle().substring(29));
+
+                if(slot == 53) {
+                    Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page+1));
+                    RepInvs.createItemsForREPORTS(inv, page+1);
+                    return;
+                } else if(slot == 52) {
+                    Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page-1));
+                    RepInvs.createItemsForREPORTS(inv, page-1);
+                    return;
+                }
+
+                List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
+
+                if(reportList.size() < slot) {
+                    return;
+                }
+
+                p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, reportList.get(slot)));
+
+                /*if(slot < 52) {
                     try {
                         Report report = MySQLManager.Requests.getReports().get(slot);
                         if (report != null) {
                             p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
                         }
                     } catch (NullPointerException ex) { }
-                }
+                }*/
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Выдача наказания для §e№")) {
                 long id = Long.parseLong(p.getOpenInventory().getTitle().substring(41));
                 String nickname = MySQLManager.Requests.getReport(id).getReportedPlayerName();

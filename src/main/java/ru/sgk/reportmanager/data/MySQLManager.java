@@ -141,6 +141,7 @@ public class MySQLManager
 		
 		/** 
 		 * @param index - index of page
+		 * @param pageSize - size of page :))
 		 * @return List of reports of some page. List contains only non-responded values
 		 */
 		public static List<Report> getReports(int index, int pageSize)

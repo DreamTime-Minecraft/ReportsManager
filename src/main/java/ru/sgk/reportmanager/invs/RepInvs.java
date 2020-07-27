@@ -25,8 +25,8 @@ public class RepInvs {
                 createItemsForREPORT2(invrep2);
                 return invrep2;
             case REPORTS:
-                Inventory invreps = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы");
-                createItemsForREPORTS(invreps);
+                Inventory invreps = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №1");
+                createItemsForREPORTS(invreps, 1);
                 return invreps;
             case PUN_REPORT:
                 Inventory invpun = Bukkit.createInventory(null, 54, "§cReports §8>> §6Выдача наказания для §e№"+report.getId());
@@ -173,16 +173,48 @@ public class RepInvs {
         inv.setItem(16, other);
     }
 
-    private static void createItemsForREPORTS(Inventory inv) {
-        List<Report> reportList = MySQLManager.Requests.getReports();
+    public static void createItemsForREPORTS(Inventory inv, int page) {
+        List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
 
         if(reportList == null) {
+            ItemStack no = new ItemStack(Material.BOOK);
+            ItemMeta on = no.getItemMeta();
+            on.setDisplayName("§aЖалоб нет. Так держать!");
+            no.setItemMeta(on);
+            inv.setItem(0, no);
             return;
         }
 
-        for(int i = 0; i < 53; i++) {
+        if(reportList.size() < 52) {
+            ItemStack noMorePages = new ItemStack(Material.BOOK);
+            ItemMeta noMOre = noMorePages.getItemMeta();
+            noMOre.setDisplayName("§cСледующей страницы нет.");
+            noMorePages.setItemMeta(noMOre);
+            inv.setItem(53, noMorePages);
+        } else {
+            ItemStack nextPage = new ItemStack(Material.BOOK);
+            ItemMeta pageMeta = nextPage.getItemMeta();
+            pageMeta.setDisplayName("§aСлед. страница");
+            nextPage.setItemMeta(pageMeta);
+            inv.setItem(53, nextPage);
+        }
+
+        if(page > 1) {
+            ItemStack lastPage = new ItemStack(Material.BOOK);
+            ItemMeta pageMeta = lastPage.getItemMeta();
+            pageMeta.setDisplayName("§aПред. страница");
+            lastPage.setItemMeta(pageMeta);
+            inv.setItem(52, lastPage);
+        } else {
+            ItemStack noLastPage = new ItemStack(Material.BOOK);
+            ItemMeta pageMeta = noLastPage.getItemMeta();
+            pageMeta.setDisplayName("§cЭто 1 страница");
+            noLastPage.setItemMeta(pageMeta);
+            inv.setItem(52, noLastPage);
+        }
+
+        for(int i = 0; i < 52; i++) {
             if(reportList.size() > i) {
-                //Report rep = reportList.get(i);
                 Report rep = reportList.get(i);
                 ItemStack item = new ItemStack(Material.PAPER);
                 ItemMeta meta = item.getItemMeta();
@@ -197,29 +229,47 @@ public class RepInvs {
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 inv.setItem(i, item);
-
-                /*for(Report report : reportList) {
-                    if(!report.isResponded()) {
-                        ItemStack item = new ItemStack(Material.PAPER);
-                        ItemMeta meta = item.getItemMeta();
-                        meta.setDisplayName("§c"+report.getReportedPlayerName());
-                        List<String> lore = new ArrayList<>();
-                        lore.add("§0");
-                        lore.add("§8> §7Жалуется: §f"+report.getReporterPlayerName());
-                        lore.add("§8> §7Причина: §f"+report.getText());
-                        lore.add("§1");
-                        lore.add("§8> §7Кто ответил: §f"+ (report.getResponder() == null ? "§cНикто" : report.getResponder()));
-                        lore.add("§8> §7Ответ: §f"+ (report.getRespond() == null ? "§cПусто" : report.getRespond()));
-                        meta.setLore(lore);
-                        item.setItemMeta(meta);
-                        inv.setItem(i, item);
-                        System.out.println("Set item "+i+" for report "+report.getId());
-                    }
-                }*/
             } else {
                 break;
             }
         }
+
+        /*List<Report> reportList = MySQLManager.Requests.getReports();
+
+        if(reportList == null) {
+            return;
+        }
+
+        if(reportList.size() < 52) {
+            for(int i = 0; i < 52; i++) {
+                if(reportList.size() > i) {
+                    Report rep = reportList.get(i);
+                    ItemStack item = new ItemStack(Material.PAPER);
+                    ItemMeta meta = item.getItemMeta();
+                    meta.setDisplayName("§8[№"+rep.getId()+"] §c"+rep.getReportedPlayerName());
+                    List<String> lore = new ArrayList<>();
+                    lore.add("§0");
+                    lore.add("§8> §7Жалуется: §f"+rep.getReporterPlayerName());
+                    lore.add("§8> §7Причина: §f"+rep.getText());
+                    lore.add("§1");
+                    lore.add("§8> §7Кто ответил: §f"+ rep.getResponder());
+                    lore.add("§8> §7Ответ: §f"+ rep.getRespond());
+                    meta.setLore(lore);
+                    item.setItemMeta(meta);
+                    inv.setItem(i, item);
+                } else {
+                    break;
+                }
+            }
+        } else {
+            //int stranica = Integer.parseInt(inv.getTitle().substring(29));
+
+            ItemStack next = new ItemStack(Material.BOOK);
+            ItemMeta neta = next.getItemMeta();
+            neta.setDisplayName("§aСлед. страница");
+            next.setItemMeta(neta);
+            inv.setItem(53, next);
+        }*/
     }
 
     private static void createItemsForSPEC(Inventory inv, Report rep) {
