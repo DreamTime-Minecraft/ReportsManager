@@ -55,7 +55,11 @@ public class InventoryEvents implements Listener {
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Все жалобы №")) {
                 int page = Integer.parseInt(p.getOpenInventory().getTitle().substring(29));
 
-                if(slot == 53) {
+                if(slot == 1) {
+                    if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Жалоб нет")) {
+                        return;
+                    }
+                } else if(slot == 53) {
                     Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page+1));
                     RepInvs.createItemsForREPORTS(inv, page+1);
                     p.openInventory(inv);
@@ -69,10 +73,6 @@ public class InventoryEvents implements Listener {
                     } else {
                         return;
                     }
-                }
-
-                if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Жалоб нет")) {
-                    return;
                 }
 
                 List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
