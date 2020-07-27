@@ -137,7 +137,8 @@ public class Report {
 		{
 			if (ReportCmd.hasPermission(player, "reportmanager.admin"))
 			{
-				player.sendMessage("§aПоступила новая жалоба §7№"+id+"§a! Список всех жалоб: §2/reports");
+				player.sendMessage("§aПоступила новая жалоба §7№"+id+"§a! Список всех жалоб: §2/reports" +
+						"\n§aОткрыть жалобу: §2/reports show "+id);
 			}
 		}
 	}
