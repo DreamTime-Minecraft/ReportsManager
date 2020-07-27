@@ -41,10 +41,11 @@ public class ReportsCmd implements CommandExecutor
 		}
 
 		if(args.length == 0) {
+			System.out.println("args.length == 0");
 			if(sender instanceof Player) {
 				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORTS, null));
-				System.out.println("Opening GUI R");
-				return false;
+				System.out.println("Opening GUI REPORTS");
+				return true;
 			} else {
 				sender.sendMessage("§a/report help");
 				return true;

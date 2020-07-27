@@ -6,7 +6,7 @@ commands:
   report:
     usage: 'report <nickname> [reason]'
   reports:
-    usage: 'reports'
+    description: 'reports'
 
   reportmanager:
     description: 'for server developer'
