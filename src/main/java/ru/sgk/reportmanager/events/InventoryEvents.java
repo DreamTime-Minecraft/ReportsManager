@@ -71,6 +71,10 @@ public class InventoryEvents implements Listener {
                     }
                 }
 
+                if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Жалоб нет")) {
+                    return;
+                }
+
                 List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
 
                 if(reportList.size() < slot) {
