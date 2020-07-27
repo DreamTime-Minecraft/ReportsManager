@@ -258,6 +258,7 @@ public class RepInvs {
         loreWhat.add("§8> §7Вы открыли одну из жалоб игроков.");
         loreWhat.add("§8> §7Здесь Вы можете узнать о жалобе,");
         loreWhat.add("§8> §7выдать наказание или оставить комментарий к жалобе.");
+        loreWhat.add("§1");
         metaWhat.setLore(loreWhat);
         whatIsIt.setItemMeta(metaWhat);
         inv.setItem(8, whatIsIt);
@@ -267,24 +268,38 @@ public class RepInvs {
         metaPunish.setDisplayName("§cВыдать наказание");
         punish.setItemMeta(metaPunish);
         inv.setItem(49, punish);
+
+        ItemStack close = new ItemStack(Material.TNT);
+        ItemMeta metaClose = close.getItemMeta();
+        metaClose.setDisplayName("§cЗакрыть жалобу");
+        close.setItemMeta(metaClose);
+        inv.setItem(45, close);
     }
 
     private static void createItemsForPunish(Inventory inv, Report report) {
         //Заголовки
         ItemStack ban = new ItemStack(Material.BEDROCK);
-        ban.getItemMeta().setDisplayName("§cБаны");
+        ItemMeta banMeta = ban.getItemMeta();
+        banMeta.setDisplayName("§cБаны");
+        ban.setItemMeta(banMeta);
         inv.setItem(10, ban);
 
         ItemStack mute = new ItemStack(Material.OBSIDIAN);
-        mute.getItemMeta().setDisplayName("§cМуты");
+        ItemMeta muteMeta = mute.getItemMeta();
+        muteMeta.setDisplayName("§cМуты");
+        mute.setItemMeta(muteMeta);
         inv.setItem(12, mute);
 
         ItemStack kick = new ItemStack(Material.NETHER_BRICK);
-        kick.getItemMeta().setDisplayName("§cКики");
+        ItemMeta kickMeta = kick.getItemMeta();
+        kickMeta.setDisplayName("§cКики");
+        kick.setItemMeta(kickMeta);
         inv.setItem(14, kick);
 
         ItemStack warn = new ItemStack(Material.NETHERRACK);
-        warn.getItemMeta().setDisplayName("§cВарны");
+        ItemMeta warnMeta = warn.getItemMeta();
+        warnMeta.setDisplayName("§cВарны");
+        warn.setItemMeta(warnMeta);
         inv.setItem(16, warn);
 
         //Клик чтобы бан

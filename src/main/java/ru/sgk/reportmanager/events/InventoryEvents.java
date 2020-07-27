@@ -92,6 +92,10 @@ public class InventoryEvents implements Listener {
                 long id = Long.parseLong(p.getOpenInventory().getTitle().substring(25));
                 if(slot == 49) {
                     p.openInventory(RepInvs.createInventory(ReportInvTypes.PUN_REPORT, MySQLManager.Requests.getReport(id)));
+                } else if(slot == 45) {
+                    p.closeInventory();
+                    MySQLManager.Requests.setResponded(id, true);
+                    p.sendMessage("§aЖалоба помечена решённой!");
                 }
             }
         }
