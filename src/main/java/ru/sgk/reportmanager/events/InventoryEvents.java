@@ -77,7 +77,7 @@ public class InventoryEvents implements Listener {
 
                 List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
 
-                if(reportList.size() < slot) {
+                if(reportList == null || reportList.size() < slot) {
                     return;
                 }
 
