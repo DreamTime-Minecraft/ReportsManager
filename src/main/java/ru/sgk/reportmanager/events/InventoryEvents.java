@@ -58,11 +58,17 @@ public class InventoryEvents implements Listener {
                 if(slot == 53) {
                     Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page+1));
                     RepInvs.createItemsForREPORTS(inv, page+1);
+                    p.openInventory(inv);
                     return;
                 } else if(slot == 52) {
-                    Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page-1));
-                    RepInvs.createItemsForREPORTS(inv, page-1);
-                    return;
+                    if(page > 1) {
+                        Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №" + (page - 1));
+                        RepInvs.createItemsForREPORTS(inv, page - 1);
+                        p.openInventory(inv);
+                        return;
+                    } else {
+                        return;
+                    }
                 }
 
                 List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
