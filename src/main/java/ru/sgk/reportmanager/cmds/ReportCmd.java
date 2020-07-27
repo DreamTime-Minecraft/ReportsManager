@@ -350,7 +350,8 @@ public class ReportCmd implements CommandExecutor
 		if(hasPermission(sender, "reportmanager.reports.use")) {
 			sender.sendMessage("§a > §7/reports - открыть список открытых жалоб");
 			sender.sendMessage("§a > §7/reports close <id> - пометить жалобу решённой, не оставив ответ");
-			//sender.sendMessage("§a > §7/reports answer <id> <текст> - ответить на жалобу");
+			sender.sendMessage("§a > §7/reports answer <id> <текст> - ответить на жалобу");
+			sender.sendMessage("§a > §7/reports show <id> - открыть жалобу (даже если она решена)");
 			//Возможно потом ты это сделаешь, я слишком глуп для такого
 		}
 	}
