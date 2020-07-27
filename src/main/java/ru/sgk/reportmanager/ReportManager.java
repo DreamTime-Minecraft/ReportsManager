@@ -93,7 +93,8 @@ public class ReportManager extends JavaPlugin
 		Report.notifyAdmin(id);
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			ByteArrayDataOutput out = ByteStreams.newDataOutput();
-
+			out.writeUTF("Forward"); // So BungeeCord knows to forward it
+			out.writeUTF("ALL");
 			out.writeUTF("report.send");
 			out.writeLong(id);
 
