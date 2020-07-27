@@ -60,8 +60,30 @@ public class ReportsCmd implements CommandExecutor
 						} else {
 							report.setResponded(true);
 							MySQLManager.Requests.setResponded(id, true);
+							sender.sendMessage("§aЖалоба §7№"+id+" §aпомечена закрытой!");
 							return true;
 						}
+					}catch (NumberFormatException e) {
+						sender.sendMessage("§cЭто не число!");
+						return true;
+					}
+				} else {
+					Bukkit.dispatchCommand(sender, "/report help");
+					return true;
+				}
+			} else if(args[0].equalsIgnoreCase("answer")) {
+				if(args.length >= 3) {
+					try {
+						long id = Long.parseLong(args[1]);
+						StringBuilder sb = new StringBuilder();
+						for(int i = 2; i < args.length; i++) {
+							sb.append(args[i]).append(" ");
+						}
+						String answer = sb.toString();
+						answer = answer.substring(0, answer.length()-1);
+
+						MySQLManager.Requests.sendResponse(id, answer, sender.getName());
+						sender.sendMessage("§aВы отправили ответ на жалобу §7№"+id+"§a:\n§f"+answer);
 					}catch (NumberFormatException e) {
 						sender.sendMessage("§cЭто не число!");
 						return true;

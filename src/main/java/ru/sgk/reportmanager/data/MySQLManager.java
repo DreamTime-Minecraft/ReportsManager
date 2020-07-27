@@ -83,7 +83,7 @@ public class MySQLManager
 		 * @param str string to append
 		 * @return false if exist no reports with ID <i>id</i>. Otherwise returns true
 		 */
-		public static boolean sendResponse(int id, String str, String responder)
+		public static boolean sendResponse(long id, String str, String responder)
 		{
 				return db.execute("UPDATE `reportmanager` SET `response` = ?, `responder` = ?, `responded` = TRUE, `checked` = FALSE where id = ?"
 						, str, responder, id) > 0;
