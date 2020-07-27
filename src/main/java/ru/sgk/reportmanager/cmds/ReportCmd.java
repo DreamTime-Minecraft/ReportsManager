@@ -1,30 +1,19 @@
 package ru.sgk.reportmanager.cmds;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-
 import ru.sgk.reportmanager.ReportManager;
-import ru.sgk.reportmanager.data.Configuration;
-import ru.sgk.reportmanager.data.Report;
-import ru.sgk.reportmanager.data.MySQLManager;
 import ru.sgk.reportmanager.data.Reporting;
 import ru.sgk.reportmanager.events.InventoryEvents;
 import ru.sgk.reportmanager.invs.RepInvs;
 import ru.sgk.reportmanager.invs.ReportInvTypes;
+
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReportCmd implements CommandExecutor 
 {
@@ -49,7 +38,7 @@ public class ReportCmd implements CommandExecutor
 		return sender.hasPermission("reportmanager.admin") || sender.hasPermission(permission);
 	}
 
-	public static ConcurrentHashMap<UUID, Integer> cooldown = new ConcurrentHashMap<>(50,1f);
+	public static ConcurrentHashMap<UUID, Long> cooldown = new ConcurrentHashMap<>(50,1f);
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
@@ -98,10 +87,14 @@ public class ReportCmd implements CommandExecutor
 				if(sender instanceof ConsoleCommandSender) {
 					reporter = "§cАнти-чит §2Гномео";
 				} else {
-					if(cooldown.containsKey(((Player)sender).getUniqueId())) {
+					UUID uuid = ((Player)sender).getUniqueId();
+					long cd = cooldown.getOrDefault(uuid, 0L);
+					long time = System.currentTimeMillis();
+					if(cd > time) {
 						sender.sendMessage("§cПожалуйста, подождите немного, прежде чем отправлять жалобу повторно!");
 						return true;
 					}
+					cooldown.put(uuid, time + (1000 * 60));
 				}
 
 				long id = ReportManager.sendReport(reporter, name, reason);
