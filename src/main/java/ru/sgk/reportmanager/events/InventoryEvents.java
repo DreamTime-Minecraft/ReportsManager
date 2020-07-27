@@ -95,39 +95,32 @@ public class InventoryEvents implements Listener {
                 long id = Long.parseLong(p.getOpenInventory().getTitle().substring(41));
                 String nickname = MySQLManager.Requests.getReport(id).getReportedPlayerName();
                 if(nickname == null) {
-                    p.closeInventory();
                     p.sendMessage("§cПроизошла ошибка при получении ника игрока! Напишите об этом Администрации сервера!");
                 }
                 if(slot == 19) {
                     p.performCommand("ban "+nickname+" Использование постороннего ПО");
-                    p.closeInventory();
                 } else if(slot == 28) {
                     p.performCommand("ban "+nickname+" 90d Гриферство");
-                    p.closeInventory();
                 } else if(slot == 37) {
                     p.performCommand("ban "+nickname+" 3d Помехи в команде");
-                    p.closeInventory();
                 } else if(slot == 21) {
                     p.performCommand("mute "+nickname+" 30m Маты/Оскорбления");
-                    p.closeInventory();
                 } else if(slot == 30) {
                     p.performCommand("mute "+nickname+" 2h Пропоганда");
-                    p.closeInventory();
                 } else if(slot == 39) {
                     p.performCommand("mute "+nickname+" 15m Спам/Флуд");
-                    p.closeInventory();
                 } else if(slot == 23) {
                     p.performCommand("kick "+nickname+" Помеха в игре");
-                    p.closeInventory();
                 }
+                p.performCommand("reports show "+id);
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Жалоба №")) {
                 long id = Long.parseLong(p.getOpenInventory().getTitle().substring(25));
                 if(slot == 49) {
                     p.openInventory(RepInvs.createInventory(ReportInvTypes.PUN_REPORT, MySQLManager.Requests.getReport(id)));
                 } else if(slot == 45) {
-                    p.closeInventory();
                     MySQLManager.Requests.setResponded(id, true);
                     p.sendMessage("§aЖалоба помечена решённой!");
+                    p.performCommand("reports");
                 }
             }
         }
@@ -135,10 +128,15 @@ public class InventoryEvents implements Listener {
 
     private void sendReport(Player p, String reason) {
         String name = p.getName();
-        Reporting rep = reporti.get(name);
-        long id = ReportManager.sendReport(name, rep.name, reason);
-        p.closeInventory();
-        p.sendMessage("§aВаша жалоба на игрока §2"+rep.name+" §aбудет рассмотрена модераторами в ближайшее время! §8[id жалобы: "+id+"]");
-        reporti.remove(p.getName());
+        if(reporti.containsKey(name)) {
+            Reporting rep = reporti.get(name);
+            long id = ReportManager.sendReport(name, rep.name, reason);
+            p.closeInventory();
+            p.sendMessage("§aВаша жалоба на игрока §2" + rep.name + " §aбудет рассмотрена модераторами в ближайшее время! §8[id жалобы: " + id + "]");
+            reporti.remove(p.getName());
+        } else {
+            p.closeInventory();
+            p.sendMessage("§cВаше время на жалобу истекло! Пожалуйста, выбирайте причину быстрее.");
+        }
     }
 }
