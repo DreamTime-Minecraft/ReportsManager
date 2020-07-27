@@ -75,6 +75,12 @@ public class ReportCmd implements CommandExecutor
 				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORT1, null));
 			} else {
 				String name = args[0];
+
+				if(name.equals(sender.getName())) {
+					sender.sendMessage("§cВы не можете отправить жалобу на самого себя!");
+					return true;
+				}
+
 				StringBuilder sb = new StringBuilder();
 				for(int i = 1; i < args.length; i++) {
 					sb.append(args[i]).append(" ");
@@ -86,6 +92,11 @@ public class ReportCmd implements CommandExecutor
 
 				if(sender instanceof ConsoleCommandSender) {
 					reporter = "§cАнти-чит §2Гномео";
+				} else {
+					if(cooldown.containsKey(((Player)sender).getUniqueId())) {
+						sender.sendMessage("§cПожалуйста, подождите немного, прежде чем отправлять жалобу повторно!");
+						return true;
+					}
 				}
 
 				long id = ReportManager.sendReport(reporter, name, reason);

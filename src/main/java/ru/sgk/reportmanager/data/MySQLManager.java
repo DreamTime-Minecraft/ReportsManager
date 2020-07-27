@@ -90,7 +90,7 @@ public class MySQLManager
 		}
 
 		public static void setResponded(long id, boolean responded) {
-			db.execute("UPDATE `reportmanager` SET `responded`="+responded+" WHERE `id`"+id);
+			db.execute("UPDATE `reportmanager` SET `responded`="+responded+" WHERE `id`="+id);
 		}
 		
 		/**

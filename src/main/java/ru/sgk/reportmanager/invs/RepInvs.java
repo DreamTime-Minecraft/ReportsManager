@@ -25,10 +25,8 @@ public class RepInvs {
                 createItemsForREPORT2(invrep2);
                 return invrep2;
             case REPORTS:
-                System.out.println("Creating inventory...");
                 Inventory invreps = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы");
                 createItemsForREPORTS(invreps);
-                System.out.println("Returning inventory...");
                 return invreps;
             case PUN_REPORT:
                 Inventory invpun = Bukkit.createInventory(null, 54, "§cReports §8>> §6Выдача наказания для §e№"+report.getId());
@@ -179,12 +177,11 @@ public class RepInvs {
         List<Report> reportList = MySQLManager.Requests.getReports();
 
         if(reportList == null) {
-            System.out.println("reportList is null!");
             return;
         }
 
         for(int i = 0; i < 53; i++) {
-            if(reportList.size() >= i) {
+            if(reportList.size() > i) {
                 //Report rep = reportList.get(i);
                 Report rep = reportList.get(i);
                 ItemStack item = new ItemStack(Material.PAPER);
@@ -200,7 +197,6 @@ public class RepInvs {
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 inv.setItem(i, item);
-                System.out.println("Set item "+i+" for report "+rep.getId());
 
                 /*for(Report report : reportList) {
                     if(!report.isResponded()) {
@@ -221,7 +217,6 @@ public class RepInvs {
                     }
                 }*/
             } else {
-                System.out.println("No more reports...");
                 break;
             }
         }

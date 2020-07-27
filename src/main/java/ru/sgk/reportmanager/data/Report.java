@@ -137,8 +137,7 @@ public class Report {
 		{
 			if (ReportCmd.hasPermission(player, "reportmanager.admin"))
 			{
-				player.sendMessage(Configuration.getString(ReportManager.getInstance().getConfig(), "messages.notify-admin")
-						.replaceAll("%id%", id+""));
+				player.sendMessage("§aПоступила новая жалоба §7№"+id+"§a! Список всех жалоб: §2/reports");
 			}
 		}
 	}

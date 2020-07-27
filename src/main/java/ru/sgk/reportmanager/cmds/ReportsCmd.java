@@ -39,6 +39,7 @@ public class ReportsCmd implements CommandExecutor
 			sender.sendMessage("§сУ Вас недостаточно прав. Если Вы считаете это ошибкой, сообщите Администрации сервера.");
 			return true;
 		}
+
 		if(args.length == 0) {
 			if(sender instanceof Player) {
 				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORTS, null));
