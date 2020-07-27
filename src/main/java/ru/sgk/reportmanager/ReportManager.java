@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.sgk.reportmanager.bungee.Messenger;
 import ru.sgk.reportmanager.cmds.ReportCmd;
 import ru.sgk.reportmanager.cmds.ReportManagerCmd;
+import ru.sgk.reportmanager.cmds.ReportsCmd;
 import ru.sgk.reportmanager.data.Configuration;
 import ru.sgk.reportmanager.data.MySQLManager;
 import ru.sgk.reportmanager.data.Report;
@@ -38,6 +39,7 @@ public class ReportManager extends JavaPlugin
     	getServer().getMessenger().registerOutgoingPluginChannel(instance, "BungeeCord");
     	
     	getCommand("report").setExecutor(new ReportCmd(config));
+    	getCommand("reports").setExecutor(new ReportsCmd(config));
     	getCommand("reportmanager").setExecutor(new ReportManagerCmd(config));
     	dbConnect();
     	getServer().getPluginManager().registerEvents(new MainEvents(), instance);
