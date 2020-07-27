@@ -176,7 +176,7 @@ public class RepInvs {
     public static void createItemsForREPORTS(Inventory inv, int page) {
         List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
 
-        if(reportList == null) {
+        if(reportList == null || reportList.size() == 0) {
             ItemStack no = new ItemStack(Material.BOOK);
             ItemMeta on = no.getItemMeta();
             on.setDisplayName("§aЖалоб нет. Так держать!");
