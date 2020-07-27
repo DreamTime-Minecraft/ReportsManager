@@ -3,8 +3,6 @@ package ru.sgk.reportmanager.data;
 import ru.sgk.dreamtimeapi.data.Database;
 import ru.sgk.reportmanager.ReportManager;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import java.util.List;
 public class MySQLManager 
 {
 	private static Database db;
-	private static Connection connection;
 	public static class Requests
 	{
 		/**
@@ -195,13 +192,6 @@ public class MySQLManager
 	}
 
 	/**
-	 * @return true if connection established
-	 */
-	public static boolean isConnected() 
-	{ 
-		return connection != null;
-	}
-	/**
 	 * connect to database
 	 * @param host - host
 	 * @param database - database name
@@ -210,16 +200,8 @@ public class MySQLManager
 	 */
 	public static void connect(String host, String database, String user, String password)
 	{
-		if (!isConnected())
-		{
-			try {
-				connection  = DriverManager.getConnection("jdbc:mysql://"+host+":3306/"+database+"?autoReconnect=true",user,password);
-				ReportManager.log("§aConnection with database succesful complete");
-			} catch (SQLException e) {
-				ReportManager.log("§cCannot connect to database: ");
-				System.out.println(e.getMessage());
-			}
-		}
+		db = new Database(host, 3306, user, password, database);
+		ReportManager.log("§aConnection with database succesful complete");
 	}
 	/**
 	 * closes database connection
@@ -227,21 +209,9 @@ public class MySQLManager
 	public static void closeConnection()
 	{
 		try {
-			if (db != null)
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		if (isConnected())
-		{
-			try {
-				connection.close();
-				connection = null;
-			} catch (SQLException e) {
-	
-				ReportManager.log("§cError with close the connectoin:");
-				System.out.println(e.getMessage());
-			}
 		}
 	}
 	public static Database getDB() {
