@@ -39,12 +39,9 @@ public class ReportsCmd implements CommandExecutor
 			sender.sendMessage("§сУ Вас недостаточно прав. Если Вы считаете это ошибкой, сообщите Администрации сервера.");
 			return true;
 		}
-		System.out.println("Command /reports used!");
 		if(args.length == 0) {
-			System.out.println("args.length == 0");
 			if(sender instanceof Player) {
 				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORTS, null));
-				System.out.println("Opening GUI REPORTS");
 				return true;
 			} else {
 				sender.sendMessage("§a/report help");

@@ -61,12 +61,12 @@ public class Report {
 
 	public String getRespond() 
 	{
-		return respond == null ? "Нет ответа" : respond;
+		return respond == null ? "§cНет ответа" : respond;
 	}
 
 	public String getResponder() 
 	{
-		return responder == null ? "Нет ответа" : responder;
+		return responder == null ? "§cНет ответа" : responder;
 	}
 	
 	public boolean isChecked() 
