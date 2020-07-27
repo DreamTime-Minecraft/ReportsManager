@@ -1,12 +1,12 @@
 main: ru.sgk.reportmanager.ReportManager
 name: ReportManager
-version: 0.0.2-SNAPSHOT
-author: SteveGrKek
+version: 0.0.3-SNAPSHOT
+authors: [SteveGrKek,yiaaanni]
 commands:
   report:
-    usage: '/report - to get help'
+    usage: 'report <nickname> [reason]'
   reports:
-    usage: ''
+    usage: 'reports'
 
   reportmanager:
     description: 'for server developer'
