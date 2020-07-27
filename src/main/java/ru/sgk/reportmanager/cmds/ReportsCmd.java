@@ -84,6 +84,7 @@ public class ReportsCmd implements CommandExecutor
 
 						MySQLManager.Requests.sendResponse(id, answer, sender.getName());
 						sender.sendMessage("§aВы отправили ответ на жалобу §7№"+id+"§a:\n§f"+answer);
+						Report.notifyPlayer(id);
 					}catch (NumberFormatException e) {
 						sender.sendMessage("§cЭто не число!");
 						return true;
@@ -91,6 +92,17 @@ public class ReportsCmd implements CommandExecutor
 				} else {
 					Bukkit.dispatchCommand(sender, "/report help");
 					return true;
+				}
+			} else if(args[0].equalsIgnoreCase("show")) {
+				if(args.length == 2) {
+					try {
+						long id = Long.parseLong(args[1]);
+						Report report = MySQLManager.Requests.getReport(id);
+						((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, report));
+					}catch (NumberFormatException e) {
+						sender.sendMessage("§cЭто не число!");
+						return true;
+					}
 				}
 			}
 		}

@@ -154,12 +154,14 @@ public class Report {
 	{
 		Runnable task = () ->
 		{
-			String name = MySQLManager.Requests.getReport(id).getReporterPlayerName();
+			Report report = MySQLManager.Requests.getReport(id);
+			String name = report.getReporterPlayerName();
 			try
 			{
 				Player p = Bukkit.getPlayer(name);
 				if (p.isOnline())
-					p.sendMessage(Configuration.getString(ReportManager.getInstance().getConfig(), "messages.notification"));
+					p.sendMessage("§aВы получили ответ на Вашу жалобу §7№"+report.getId()+"§a от §cМодератора "+report.getResponder()+"§a:" +
+							"\n§f"+report.getRespond());
 			}
 			catch (Exception e) {}
 		};

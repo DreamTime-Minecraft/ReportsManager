@@ -231,11 +231,21 @@ public class RepInvs {
         lore.add("§8> §7Жалуется: §f"+rep.getReporterPlayerName());
         lore.add("§8> §7Причина: §f"+rep.getText());
         lore.add("§1");
-        lore.add("§8> §7Кто ответил: §f"+ (rep.getResponder() == null ? "§cНикто" : rep.getResponder()));
-        lore.add("§8> §7Ответ: §f"+ (rep.getRespond() == null ? "§cПусто" : rep.getRespond()));
         metaInfo.setLore(lore);
         info.setItemMeta(metaInfo);
         inv.setItem(0, info);
+
+        ItemStack answer = new ItemStack(Material.BOOK);
+        ItemMeta metaAnswer = answer.getItemMeta();
+        metaAnswer.setDisplayName("§fОтвет на жалобу");
+        List<String> lorea = new ArrayList<>();
+        lorea.add("§0");
+        lorea.add("§8> §7Кто ответил: §f"+ rep.getResponder());
+        lorea.add("§8> §7Ответ: §f"+ rep.getRespond());
+        lorea.add("§1");
+        metaAnswer.setLore(lorea);
+        answer.setItemMeta(metaAnswer);
+        inv.setItem(4, answer);
 
         ItemStack whatIsIt = new ItemStack(Material.COMPASS);
         ItemMeta metaWhat = whatIsIt.getItemMeta();
