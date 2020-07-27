@@ -1,6 +1,7 @@
 package ru.sgk.reportmanager.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,29 +56,33 @@ public class InventoryEvents implements Listener {
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Все жалобы №")) {
                 int page = Integer.parseInt(p.getOpenInventory().getTitle().substring(29));
 
-                if(slot == 1) {
+                List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
+
+                if(reportList == null) {
+                    return;
+                }
+
+                if(slot == 0) {
                     if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Жалоб нет")) {
                         return;
                     }
                 } else if(slot == 53) {
-                    Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №"+ (page+1));
-                    RepInvs.createItemsForREPORTS(inv, page+1);
-                    p.openInventory(inv);
+                    if(e.getCurrentItem().getItemMeta().getDisplayName().contains("След.")) {
+                        Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №" + (page + 1));
+                        RepInvs.createItemsForREPORTS(inv, page + 1);
+                        p.openInventory(inv);
+                    }
                     return;
                 } else if(slot == 52) {
                     if(page > 1) {
                         Inventory inv = Bukkit.createInventory(null, 54, "§cReports §8>> §6Все жалобы №" + (page - 1));
                         RepInvs.createItemsForREPORTS(inv, page - 1);
                         p.openInventory(inv);
-                        return;
-                    } else {
-                        return;
                     }
+                    return;
                 }
 
-                List<Report> reportList = MySQLManager.Requests.getReports(page, 52);
-
-                if(reportList == null || reportList.size() < slot) {
+                if(reportList.size() <= slot) {
                     return;
                 }
 
