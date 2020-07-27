@@ -243,6 +243,9 @@ public class RepInvs {
         lorea.add("§8> §7Кто ответил: §f"+ rep.getResponder());
         lorea.add("§8> §7Ответ: §f"+ rep.getRespond());
         lorea.add("§1");
+        lorea.add("§fКак ответить:");
+        lorea.add("§7/reports answer "+rep.getId()+" <текст>");
+        lorea.add("§2");
         metaAnswer.setLore(lorea);
         answer.setItemMeta(metaAnswer);
         inv.setItem(4, answer);

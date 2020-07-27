@@ -88,6 +88,11 @@ public class ReportCmd implements CommandExecutor
 				String reason = sb.toString();
 				reason = reason.substring(0, reason.length()-1);
 
+				if(reason.length() > 35) {
+					sender.sendMessage("§cПожалуйста, напишите причину кроче 35-ти символов!");
+					return true;
+				}
+
 				String reporter = sender.getName();
 
 				if(sender instanceof ConsoleCommandSender) {

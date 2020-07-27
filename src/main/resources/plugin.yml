@@ -4,7 +4,7 @@ version: 0.0.4-SNAPSHOT
 authors: [SteveGrKek,yiaaanni]
 commands:
   report:
-    usage: 'report <nickname> [reason]'
+    description: 'report <nickname> [reason]'
   reports:
     description: 'reports'
 
