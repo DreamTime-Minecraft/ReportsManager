@@ -52,10 +52,12 @@ public class InventoryEvents implements Listener {
                 }
             } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Все жалобы")) {
                 if(slot < 53) {
-                    Report report = MySQLManager.Requests.getReports().get(slot);
-                    if(report != null) {
-                        p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
-                    }
+                    try {
+                        Report report = MySQLManager.Requests.getReports().get(slot);
+                        if (report != null) {
+                            p.openInventory(RepInvs.createInventory(ReportInvTypes.SPEC_REPORT, MySQLManager.Requests.getReports().get(slot)));
+                        }
+                    } catch (NullPointerException ex) { }
                 }
             } else if (p.getOpenInventory().getTitle().startsWith("§cReports §8>> §6Выдача наказания для §e№")) {
                 long id = Long.parseLong(p.getOpenInventory().getTitle().substring(41));

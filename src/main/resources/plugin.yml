@@ -1,6 +1,6 @@
 main: ru.sgk.reportmanager.ReportManager
 name: ReportManager
-version: 0.0.3-SNAPSHOT
+version: 0.0.4-SNAPSHOT
 authors: [SteveGrKek,yiaaanni]
 commands:
   report:
