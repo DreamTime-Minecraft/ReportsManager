@@ -20,7 +20,8 @@ public class Messenger implements PluginMessageListener{
 			String subchannel = in.readUTF();
 			if (subchannel.equalsIgnoreCase("report.send"))
 			{
-				long id = in.readLong();
+				long id = Long.parseLong(in.readUTF());
+
 				Report.notifyAdmin(id);
 			}
 			else if (subchannel.equalsIgnoreCase("report.reply"))

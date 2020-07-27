@@ -96,7 +96,7 @@ public class ReportManager extends JavaPlugin
 			out.writeUTF("Forward"); // So BungeeCord knows to forward it
 			out.writeUTF("ALL");
 			out.writeUTF("report.send");
-			out.writeLong(id);
+			out.writeUTF(String.valueOf(id));
 
 			player.sendPluginMessage(instance, "BungeeCord", out.toByteArray());
 			break;
