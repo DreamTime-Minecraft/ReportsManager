@@ -43,8 +43,11 @@ public class ReportsCmd implements CommandExecutor
 		if(args.length == 0) {
 			if(sender instanceof Player) {
 				((Player)sender).openInventory(RepInvs.createInventory(ReportInvTypes.REPORTS, null));
+				System.out.println("Opening GUI R");
+				return false;
 			} else {
 				sender.sendMessage("§a/report help");
+				return true;
 			}
 		} else {
 			if(args[0].equalsIgnoreCase("close")) {
@@ -54,15 +57,19 @@ public class ReportsCmd implements CommandExecutor
 						Report report = MySQLManager.Requests.getReport(id);
 						if(report.isResponded()) {
 							sender.sendMessage("§cНа жалобу уже дали ответ!");
+							return true;
 						} else {
 							report.setResponded(true);
 							MySQLManager.Requests.setResponded(id, true);
+							return true;
 						}
 					}catch (NumberFormatException e) {
 						sender.sendMessage("§cЭто не число!");
+						return true;
 					}
 				} else {
 					Bukkit.dispatchCommand(sender, "/report help");
+					return true;
 				}
 			}
 		}

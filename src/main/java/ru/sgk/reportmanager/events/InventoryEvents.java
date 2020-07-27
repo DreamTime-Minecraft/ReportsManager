@@ -23,7 +23,7 @@ public class InventoryEvents implements Listener {
         Player p = (Player)e.getWhoClicked();
         int slot = e.getSlot();
 
-        if(p.getOpenInventory().getTitle().startsWith("§Reports §8>>")) {
+        if(p.getOpenInventory().getTitle().startsWith("§cReports §8>>")) {
             e.setCancelled(true);
             if (p.getOpenInventory().getTitle().equalsIgnoreCase("§cReports §8>> §6Отправка жалобы §e(Стадия №1)")) {
                 if(slot == 11) {
